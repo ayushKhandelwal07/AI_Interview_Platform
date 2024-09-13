@@ -1,4 +1,4 @@
-/** @type { import("drizzle-kit").Config } */
+/** @type { import("").Config } */
 
 export default {
       schema: "./utils/schema.js",

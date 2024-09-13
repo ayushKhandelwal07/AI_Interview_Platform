@@ -3,6 +3,7 @@ import { UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import React, { useEffect } from 'react'
+import logo from '../../../Public/logo.svg'
 function Header() {
 
       const path = usePathname();
@@ -11,8 +12,8 @@ function Header() {
       },[])
 
   return (
-    <div className='flex p-4 items-center justify-between hover shadow-md '>
-      <Image alt='loading...' src={'../../../Public/logo.svg'} width={160} height={100} />
+    <div className='flex  p-4 items-center justify-between hover shadow-md '>
+      <Image alt='loading...' src={logo} width={160} height={100}  />
             <ul className='hidden md:flex gap-10 border-solid border-2 border-slate-700 px-20 py-2 rounded-full' >
                   <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
                         ${path=='/dashboard'&& 'text-primary font-bold' }
@@ -27,7 +28,7 @@ function Header() {
                         ${path=='/dashboard/how'&& 'text-primary font-bold' }
                         `}>How it work ? </li>
             </ul>
-            <UserButton />
+            <UserButton className="" />
     </div>
   )
 }

@@ -36,15 +36,14 @@ function AddNewInterview() {
             const onSubmit =async (e)=>{
                   setLoading(true)
                   e.preventDefault()
-                  console.log(jobPosition,jobDescription,jobExperience);
+                  // console.log(jobPosition,jobDescription,jobExperience);
 
-                  const InputPrompt="Job Position: " +  jobPosition + ", Job Description:  " + jobDescription +", Years of Experience: " + jobDescription+ ", Depends on this information please give me " + process.env.NEXT_PUBLIC_NUMBER_OF_QUESTIONS +" Interview question with Answer in Json Format, Give Question and Answer as field in JSON"
+                  const InputPrompt="Job Position: " +  jobPosition + ", Job Description:  " + jobDescription +", Years of Experience: " + jobDescription+ ", Depends on this information please give me " + process.env.NEXT_PUBLIC_NUMBER_OF_QUESTIONS +" Interview question with Answer in Json Format";
                   const result = await chatSession.sendMessage(InputPrompt);
                   
-                  console.log(result.response.text())
-                  const final_result = (result.response.text()).replace('```json','').replace('```','');
-                  console.log(final_result);
-                  console.log(JSON.parse(final_result));
+                  // console.log(result.response.text())
+                  const final_result = (result.response.text()).replace('```json','').replace('```',''); 
+                 
                   
                   setJsonResponce(final_result)
 
@@ -62,10 +61,11 @@ function AddNewInterview() {
 
                         if(resp){
                               setOpenDialog(false);
-                              route.push('/dashboard/interviw/'+resp[0]?.mockId);                        }
+                              route.push('/dashboard/interview/'+resp[0]?.mockId);                       
+                        }
 
                         
-                        console.log("response id : ",resp )
+                        // console.log("response id : ",resp )
                         setLoading(false);
                   }else{
                         console.log("Some error occur")
@@ -102,7 +102,7 @@ function AddNewInterview() {
                         </div> 
                         <div className='my-3'>
                               <label>Experience</label>
-                              <Input type='number' placeholder='Ex. 5' min='0' max='30' 
+                              <Input type='number' placeholder='Ex. 5 years' min='0' max='30' 
                               onChange={(event)=>setJobExperience(event.target.value)}/>
                         </div> 
 
