@@ -66,7 +66,7 @@ return (
             </>}
             <div>
             </div>
-                  <Button className='mt-10' onClick={()=>router.replace('/dashboard')}>Go home</Button>
+                  <Button className='mt-10 rounde-sm' onClick={()=>router.replace('/dashboard')}>Go home</Button>
       </div >
 )
 }

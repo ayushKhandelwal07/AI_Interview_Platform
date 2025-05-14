@@ -1,4 +1,4 @@
-import { SignIn, SignInButton } from '@clerk/nextjs'
+import { RedirectToSignIn, SignIn, SignInButton } from '@clerk/nextjs'
 import Image from 'next/image'
 
 export default function Page() {
@@ -42,7 +42,7 @@ export default function Page() {
             <div
                   className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 bg-gray-200"
             >
-                  <SignIn />
+                  <SignIn forceRedirectUrl="/dashboard" />
             </div>
             </div>
             </section>

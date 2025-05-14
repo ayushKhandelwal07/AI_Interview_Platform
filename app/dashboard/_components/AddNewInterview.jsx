@@ -75,9 +75,9 @@ function AddNewInterview() {
     
   return (
     <div>
-      <div className='p-10 border rounded-lg hover:scale-105 cursor-pointer transition-all'
+      <div className='p-10 bg-zinc-100 border rounded-xl bg hover:scale-105 cursor-pointer transition-all'
             onClick={()=>setOpenDialog(true)}>
-            <h2 className='font-bold text-lg text-center'>+  Add New</h2>
+            <h2 className='font-bold text-lg text-center'>+ Add New</h2>
             
       </div>
       <Dialog className='bg-black' open={openDialog}>

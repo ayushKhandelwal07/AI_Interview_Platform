@@ -1,34 +1,84 @@
 "use client"
 import { UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-import React, { useEffect } from 'react'
+import { usePathname,useRouter } from 'next/navigation'
 import logo from '../../../Public/logo.svg'
-function Header() {
+import { Menu, X } from "lucide-react";
+import { useState } from 'react';
 
+function Header() {
+      const [isMenuOpen, setIsMenuOpen] = useState(false);
       const path = usePathname();
-      useEffect(()=>{
-            console.log(path);
-      },[])
+      const router = useRouter();
+
+      const HandleClick = (path) =>{
+            router.push(path)
+            setIsMenuOpen(false); // Close menu after navigation
+      }
+
+      const toggleMenu = () => {
+            setIsMenuOpen(!isMenuOpen);
+      }
 
   return (
-    <div className='flex  p-4 items-center justify-between hover shadow-md '>
-      <Image alt='loading...' src={logo} width={160} height={100}  />
-            <ul className='hidden md:flex gap-10 border-solid border-2 border-slate-700 px-20 py-2 rounded-full' >
-                  <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
-                        ${path=='/dashboard'&& 'text-primary font-bold' }
-                        `}>Dashboard</li>
-                  <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
-                        ${path=='/dashboard/questions'&& 'text-primary font-bold' }
-                        `}>Questions</li>
-                  <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
-                        ${path=='/dashboard/upgrade'&& 'text-primary font-bold' }
-                        `}>Upgrade</li>
-                  <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
-                        ${path=='/dashboard/how'&& 'text-primary font-bold' }
-                        `}>How it work ? </li>
+    <div className='sticky top-5 backdrop-blur-lg z-50 flex p-4 items-center justify-between hover m-5 mx-10 rounded-2xl border border-slate-200'>
+      <div className='flex-1'>
+            <Image alt='loading...' src={logo} width={160} height={100} className='hover:cursor-pointer' onClick={() => {HandleClick("/")}}  />
+      </div>
+
+      {/* Mobile Menu Button */}
+      <button 
+            className='md:hidden p-2'
+            onClick={toggleMenu}
+      >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Desktop Navigation */}
+      <div className='hidden md:flex flex-1 justify-center'>
+            <ul className='flex text-lg  gap-8'>
+                  <li className={`hover:text-primary cursor-pointer
+                        ${path=='/dashboard'&& 'text-primary font-bold ' }
+                        `} onClick={() => HandleClick('/dashboard')}>Dashboard</li>
+                  <li className={`hover:text-primary cursor-pointer
+                        ${path=='/upgrade'&& 'text-primary font-bold' }
+                        `} onClick={() => HandleClick('/upgrade')}>Upgrade</li>
+                  <li className={`hover:text-primary cursor-pointer
+                        ${path=='/how'&& 'text-primary font-bold' }
+                        `} onClick={() => HandleClick('/how')}>How it work ?</li>
+                  <li className={`hover:text-primary cursor-pointer
+                        ${path=='/how'&& 'text-primary font-bold' }
+                        `} onClick={() => HandleClick('/blogs')}>Blogs</li>
             </ul>
-            <UserButton className="" />
+      </div>
+
+      {/* Desktop User Button */}
+      <div className='hidden md:flex flex-1 justify-end'>
+            <UserButton />
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+            <div className='absolute top-full left-0 right-0 bg-white border border-slate-200 rounded-2xl mt-2 p-4 md:hidden'>
+                  <ul className='flex flex-col gap-4'>
+                        <li className='flex justify-end'>
+                              <UserButton />
+                        </li>
+                        <li className={`hover:text-primary cursor-pointer
+                              ${path=='/dashboard'&& 'text-primary font-bold' }
+                              `} onClick={() => HandleClick('/dashboard')}>Dashboard</li>
+                        <li className={`hover:text-primary cursor-pointer
+                              ${path=='/dashboard/upgrade'&& 'text-primary font-bold' }
+                              `} onClick={() => HandleClick('/dashboard/upgrade')}>Upgrade</li>
+                        <li className={`hover:text-primary cursor-pointer
+                              ${path=='/dashboard/how'&& 'text-primary font-bold' }
+                              `} onClick={() => HandleClick('/dashboard/how')}>How it work ?</li>
+                        <li className={`hover:text-primary cursor-pointer
+                              ${path=='/dashboard/how'&& 'text-primary font-bold' }
+                              `} onClick={() => HandleClick('/dashboard/blogs')}>Blogs</li>
+                  </ul>
+            </div>
+      )}
     </div>
   )
 }

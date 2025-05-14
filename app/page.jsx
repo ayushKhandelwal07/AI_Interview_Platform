@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button"
+import Header from "./dashboard/_components/Header";
 
 export default function Home() {
   return (  
-    <div className="bg-zinc-50">
-      <Button onClick={{}}>Sign in </Button>
+    <div className="">
+      <Header />
+      
     </div>
   );
 }

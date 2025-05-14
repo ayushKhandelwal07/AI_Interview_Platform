@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer base {
+      html {
+        @apply h-full w-full bg-white /* Replace bg-gray-100 with your desired color */
+      }
+    }
