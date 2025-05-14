@@ -75,14 +75,14 @@ function AddNewInterview() {
     
   return (
     <div>
-      <div className='p-10 border rounded-lg bg-slate-900 hover:scale-105 cursor-pointer transition-all'
+      <div className='p-10 border rounded-lg hover:scale-105 cursor-pointer transition-all'
             onClick={()=>setOpenDialog(true)}>
             <h2 className='font-bold text-lg text-center'>+  Add New</h2>
             
       </div>
       <Dialog className='bg-black' open={openDialog}>
       <DialogOverlay className="fixed inset-0 bg-black bg-opacity-70 z-50" />
-      <DialogContent className='max-w-2xl'>
+      <DialogContent className='max-w-2xl bg-zinc-50'>
       <DialogHeader>
             <DialogTitle  className='font-bold text-2xl'>Tell us more about your job interviewing</DialogTitle>
             <DialogDescription>
