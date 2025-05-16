@@ -2,7 +2,7 @@
 import { UserButton, useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import { usePathname,useRouter } from 'next/navigation'
-import logo from '../../../Public/logo.svg'
+import logo from '../../../public/logo.svg'
 import { Menu, X } from "lucide-react";
 import { useState } from 'react';
 
