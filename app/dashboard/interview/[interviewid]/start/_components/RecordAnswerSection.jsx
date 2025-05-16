@@ -33,16 +33,16 @@ function RecordAnswerSection({mockInterviweQuestions, activeQuestionIndex, inter
     });
 
     useEffect(() => {
-        results.map((result) => {
-            setUserAnswer(prevAns => prevAns + result?.transcript);
-        });
-    }, [results]);
-
-    useEffect(() => {
-        if(!isRecording && userAnswer?.length > 10){
-            UpdateUserAnswer();
+        if (results && results.length > 0) {
+            let newText = '';
+            results.forEach((result) => {
+                if (result?.transcript) {
+                    newText += result.transcript + ' ';
+                }
+            });
+            setUserAnswer(newText.trim());
         }
-    }, [userAnswer]);
+    }, [results]);
 
     useEffect(() => {
         if(isRecording) {
@@ -61,9 +61,14 @@ function RecordAnswerSection({mockInterviweQuestions, activeQuestionIndex, inter
     const StartStopRecording = async () => {
         if(isRecording){
             stopSpeechToText();
-            if(userAnswer?.length < 10){
-                toast('Answer should be more than 10 words, Please record again');
-            }                        
+            
+            setTimeout(() => {
+                if(userAnswer?.length < 10){
+                    toast('Answer should be more than 10 words, Please record again');
+                } else {
+                    UpdateUserAnswer();
+                }
+            }, 500);
         } else {
             startSpeechToText();
             setUserAnswer('');
@@ -78,8 +83,12 @@ function RecordAnswerSection({mockInterviweQuestions, activeQuestionIndex, inter
     }
 
     const UpdateUserAnswer = async () => {
+        if (loading) return;
+        
         setLoading(true);
         try {
+            toast('Processing your answer...');
+            
             const feedbackPrompt = "Question : " + mockInterviweQuestions[activeQuestionIndex]?.question + 
                 ", User Answer:" + userAnswer + "Depend on the question and user answer for interview questions "+
                 " Please give us rating from 1 to 10 for answer and feedback as area of improvement if any"+

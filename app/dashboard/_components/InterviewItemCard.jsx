@@ -59,7 +59,7 @@ const deleteInterview = async () => {
 
 
   return (
-  <div className="border border-slate-500 rounded-xl p-4 shadow-sm">
+<div class="border border-slate-500 bg-white-100 rounded-xl p-4 shadow-sm transition-all duration-300 ease-in-out hover:scale-105 hover:indigo-blue-100 hover:shadow-lg hover:shadow-indigo-200/50 cursor-pointer">
     <div className="flex justify-between items-start mb-1">
       <h2 className="font-medium text-lg text-blue-600">{interview?.jobPosition}</h2>
 
@@ -91,13 +91,13 @@ const deleteInterview = async () => {
     <div className="flex gap-3 mt-2">
       <button 
         onClick={onFeedback} 
-        className="flex-1 py-2 border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors"
+        className="flex-1 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
       >
         Feedback
       </button>
       <button 
         onClick={onStart} 
-        className="flex-1 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+        className="flex-1 py-2 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors"
       >
         Retake
       </button>

@@ -1,15 +1,18 @@
 "use client"
-import { UserButton } from '@clerk/nextjs'
+import { UserButton, useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import { usePathname,useRouter } from 'next/navigation'
 import logo from '../../../Public/logo.svg'
 import { Menu, X } from "lucide-react";
 import { useState } from 'react';
 
+
 function Header() {
       const [isMenuOpen, setIsMenuOpen] = useState(false);
       const path = usePathname();
       const router = useRouter();
+      const { isSignedIn } = useUser();
+
 
       const HandleClick = (path) =>{
             router.push(path)
@@ -21,9 +24,23 @@ function Header() {
       }
 
   return (
-    <div className='sticky top-5 backdrop-blur-lg z-50 flex p-4 items-center justify-between hover m-5 mx-10 rounded-2xl border border-slate-200'>
+    <div className='sticky top-5 backdrop-blur-lg z-50 flex p-4 items-center justify-between hover m-5 mx-5 rounded-2xl border border-slate-200'>
       <div className='flex-1'>
-            <Image alt='loading...' src={logo} width={160} height={100} className='hover:cursor-pointer' onClick={() => {HandleClick("/")}}  />
+            <Image 
+              alt='loading...' 
+              src={logo} 
+              width={160} 
+              height={100} 
+              className='hover:cursor-pointer'
+              quality={100}
+              priority={true}
+              style={{
+                imageRendering: 'high-quality',
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden'
+              }}
+              onClick={() => {HandleClick("/")}} 
+            />
       </div>
 
       {/* Mobile Menu Button */}
@@ -54,7 +71,7 @@ function Header() {
 
       {/* Desktop User Button */}
       <div className='hidden md:flex flex-1 justify-end'>
-            <UserButton />
+            {isSignedIn ?  <UserButton /> : <button onClick={() => router.push("/sign-in")} className='bg-primary rounded-xl hover:bg-primary/90 text-white px-3 py-1 text-lg font-medium'>Sign in</button>}
       </div>
 
       {/* Mobile Menu */}

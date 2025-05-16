@@ -13,6 +13,7 @@ module.exports = {
   			foreground: 'hsl(var(--foreground))',
 			myyellow: '#FFE98A',
 			myred : '#FF8A8A',
+      accentDark: '#1F2937',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -26,7 +27,7 @@ module.exports = {
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
+  				DEFAULT: '#38bdf8',
   				foreground: 'hsl(var(--secondary-foreground))'
   			},
   			muted: {
@@ -34,7 +35,7 @@ module.exports = {
   				foreground: 'hsl(var(--muted-foreground))'
   			},
   			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
+  				DEFAULT: '#10b981',
   				foreground: 'hsl(var(--accent-foreground))'
   			},
   			destructive: {
@@ -56,7 +57,21 @@ module.exports = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+      backgroundImage: {
+        'gradient-hero': 'linear-gradient(to bottom, #ffffff, #f9f9ff, #f4f4ff)',
+        'gradient-primary': 'linear-gradient(to right, #4845D2, #5d5ae0)',
+      },
+      animation: {
+        'float-slow': 'float 6s ease-in-out infinite',
+        'float-medium': 'float 5s ease-in-out infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
+      }
   	}
   },
   plugins: [require("tailwindcss-animate")],

@@ -75,14 +75,15 @@ function AddNewInterview() {
     
   return (
     <div>
-      <div className='p-10 bg-zinc-100 border rounded-xl bg hover:scale-105 cursor-pointer transition-all'
+      <div className='p-10 bg-zinc-100 border rounded-2xl bg hover:scale-105 cursor-pointer transition-all'
             onClick={()=>setOpenDialog(true)}>
             <h2 className='font-bold text-lg text-center'>+ Add New</h2>
             
       </div>
-      <Dialog className='bg-black' open={openDialog}>
-      <DialogOverlay className="fixed inset-0 bg-black bg-opacity-70 z-50" />
-      <DialogContent className='max-w-2xl bg-zinc-50'>
+
+      <Dialog className='' open={openDialog}>
+      <DialogOverlay className="fixed inset-0 bg-slate z-50" />
+      <DialogContent className='max-w-2xl bg-white rounded-2xl'>
       <DialogHeader>
             <DialogTitle  className='font-bold text-2xl'>Tell us more about your job interviewing</DialogTitle>
             <DialogDescription>
@@ -92,25 +93,25 @@ function AddNewInterview() {
                         <h2>Add details about your job position,Your skills and Year of experience</h2>
                         <div className='mt-7 my-2'>
                               <label>Job Position / Role</label>
-                              <Input  placeholder='Ex. Full Stack Developer' required 
+                              <Input className='rounded-xl' placeholder='Ex. Full Stack Developer' required 
                               onChange={(event)=>setJobPosition(event.target.value)} />
                         </div> 
                         <div className='my-3'>
                               <label>Job Description / Tech Stack in short</label>
-                              <Textarea placeholder='Ex. Node.js , React , Express.js , MongoDb , Docker etc'
+                              <Textarea className='rounded-xl' placeholder='Ex. Node.js , React , Express.js , MongoDb , Docker etc'
                               onChange={(event)=>setJobDescription(event.target.value)} />
                         </div> 
                         <div className='my-3'>
                               <label>Experience</label>
-                              <Input type='number' placeholder='Ex. 5 years' min='0' max='30' 
+                              <Input className='rounded-xl' type='number' placeholder='Ex. 5 years' min='0' max='30' 
                               onChange={(event)=>setJobExperience(event.target.value)}/>
                         </div> 
 
                   </div>
 
                   <div className='flex gap-5 justify-end'>
-                        <Button variant="ghost" onClick={()=>setOpenDialog(false)}>Cancel</Button>
-                        <Button  type='submit' disable={loading}> {loading? <><LoaderCircle className='animate-spin' /> Generating... </> : 'Start Inerview'} </Button>
+                        <Button className='bg-primary/10 rounded-xl' onClick={()=>setOpenDialog(false)}>Cancel</Button>
+                        <Button className='rounded-xl tracking-normal' type='submit' disable={loading}> {loading? <><LoaderCircle className='animate-spin' /> Generating... </> : 'Start Inerview'} </Button>
                   </div>
 
                   </form>
