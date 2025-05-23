@@ -74,7 +74,7 @@ const HowItWorks = () => {
             }}
           >
             <div className="text-center mb-8">
-              <h3 className="text-3xl font-bold text-white mb-2">Ready to transform your hiring process?</h3>
+              <h3 className="text-5bxl font-bold text-white mb-2">Ready to transform your hiring process?</h3>
               <p className="text-black">Join hundreds of companies that have improved their technical hiring</p>
             </div>
             <div className="flex justify-center">

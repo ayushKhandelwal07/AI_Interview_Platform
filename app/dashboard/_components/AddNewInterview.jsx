@@ -27,6 +27,7 @@ function AddNewInterview() {
       const [jobPosition , setJobPosition] = useState();
       const [jobDescription, setJobDescription] = useState();
       const [jobExperience , setJobExperience] = useState();
+      const [pdfResponse , setPdfResponse] = useState(null);
       const [loading , setLoading] = useState(false);
       const [jsonResponse , setJsonResponce] = useState([]);
       const route=useRouter();
@@ -81,47 +82,73 @@ function AddNewInterview() {
             
       </div>
 
-      <Dialog className='' open={openDialog}>
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogOverlay className="fixed inset-0 bg-slate z-50" />
-      <DialogContent className='max-w-2xl bg-white rounded-2xl'>
+      <DialogContent className='max-w-2xl bg-white rounded-2xl shadow-lg'>
       <DialogHeader>
-            <DialogTitle  className='font-bold text-2xl'>Tell us more about your job interviewing</DialogTitle>
+            <DialogTitle className='flex justify-center font-bold text-2xl'>Tell Us More About Your Job Interviewing</DialogTitle>
             <DialogDescription>
 
-                  <form onSubmit={onSubmit} >
-                  <div>
-                        <h2>Add details about your job position,Your skills and Year of experience</h2>
-                        <div className='mt-7 my-2'>
-                              <label>Job Position / Role</label>
-                              <Input className='rounded-xl' placeholder='Ex. Full Stack Developer' required 
-                              onChange={(event)=>setJobPosition(event.target.value)} />
-                        </div> 
-                        <div className='my-3'>
-                              <label>Job Description / Tech Stack in short</label>
-                              <Textarea className='rounded-xl' placeholder='Ex. Node.js , React , Express.js , MongoDb , Docker etc'
-                              onChange={(event)=>setJobDescription(event.target.value)} />
-                        </div> 
-                        <div className='my-3'>
-                              <label>Experience</label>
-                              <Input className='rounded-xl' type='number' placeholder='Ex. 5 years' min='0' max='30' 
-                              onChange={(event)=>setJobExperience(event.target.value)}/>
-                        </div> 
+                        <form onSubmit={onSubmit} >
+                        <div>
+                              <h2 className='flex justify-center text-gray-500'>Add details about your job position,Your skills and Year of experience</h2>
+                              
+                              <div className='mt-5'>
+                                    <div className='grid grid-cols-3 gap-4'>
+                                          <div className='my-3 col-span-2'>
+                                                <label className='pl-1 font-semibold text-base'>Job Position</label>
+                                                <Input
+                                                      className='rounded-xl text-black placeholder:text-gray-500 border-black' 
+                                                      placeholder='Ex. Full Stack Developer / Machine Lerning Engineer' 
+                                                      required 
+                                                      onChange={(event)=>setJobPosition(event.target.value)} />
+                                          </div> 
 
-                  </div>
+                                          <div className='my-3 col-span-1'>
+                                                <label className='pl-1 font-semibold text-base'>Experience</label>
+                                                <Input 
+                                                      className='rounded-xl text-black placeholder:text-gray-500 border-black [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' 
+                                                      type='number' 
+                                                      placeholder='Ex. 5 years' 
+                                                      min='0' 
+                                                      max='30' 
+                                                onChange={(event)=>setJobExperience(event.target.value)}/>
+                                          </div>
+                                    </div>
+                              </div>
 
-                  <div className='flex gap-5 justify-end'>
-                        <Button className='bg-primary/10 rounded-xl' onClick={()=>setOpenDialog(false)}>Cancel</Button>
-                        <Button className='rounded-xl tracking-normal' type='submit' disable={loading}> {loading? <><LoaderCircle className='animate-spin' /> Generating... </> : 'Start Inerview'} </Button>
-                  </div>
+                              <div className='my-3'>
+                                    <label className='pl-1 font-semibold text-base'>Job Description / Tech Stack</label>
+                                    <Textarea 
+                                          className='rounded-xl text-black placeholder:text-gray-500 border-black' 
+                                          placeholder='Ex. Node.js , React , Express.js , MongoDb , Docker etc'
+                                          onChange={(event)=>setJobDescription(event.target.value)} />
+                              </div> 
+                              <div className='my-3'>
+                                    <label className='pl-1 font-semibold text-base'>Upload Resume</label>
+                                    <Input 
+                                          className='rounded-xl text-black placeholder:text-gray-500 border-black hover:pointer cursor-pointer' 
+                                          type='file'
+                                          accept='.pdf'
+                                          placeholder='Upload your resume in PDF format'
+                                          onChange={(event)=>setPdfResponse(event.target.value)}/>
+                              </div>  
 
-                  </form>
+                        </div>
+
+                        <div className='pl-1 flex gap-5 justify-end'>
+                              <Button className='bg-primary/10 hover:bg-primary/20 rounded-xl' onClick={()=>setOpenDialog(false)}>Cancel</Button>
+                              <Button className='rounded-xl tracking-normal' type='submit' disable={loading}> {loading? <> Generating... <LoaderCircle className='animate-spin' />  </> : 'Start Inerview'} </Button>
+                        </div>
+
+                        </form>
+
 
 
             </DialogDescription>
       </DialogHeader>
       </DialogContent>
       </Dialog>
-
     </div>
   )
 }
