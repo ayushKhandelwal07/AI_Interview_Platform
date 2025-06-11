@@ -182,16 +182,6 @@ function RecordAnswerSection({mockInterviweQuestions, activeQuestionIndex, inter
                     )}
                 </Button>
                 
-                {userAnswer.length > 10 && !isRecording && !loading && (
-                    <Button 
-                        variant="outline"
-                        size="lg"
-                        className="border-slate-300"
-                        onClick={() => setUserAnswer('')}
-                    >
-                        Clear Answer
-                    </Button>
-                )}
             </div>
             
             {error && (

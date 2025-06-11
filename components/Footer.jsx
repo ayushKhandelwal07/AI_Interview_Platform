@@ -7,10 +7,10 @@ const Footer = () => {
     {
       title: "Product",
       links: [
-        { text: "Features", href: "#features" },
+        { text: "Dashboard", href: "#features" },
         { text: "How It Works", href: "#how-it-works" },
         { text: "Pricing", href: "#pricing" },
-        { text: "Testimonials", href: "#testimonials" },
+        { text: "Blogs", href: "#testimonials" },
       ]
     },
     {
@@ -31,15 +31,6 @@ const Footer = () => {
         { text: "Partners", href: "#" },
       ]
     },
-    {
-      title: "Legal",
-      links: [
-        { text: "Privacy Policy", href: "#" },
-        { text: "Terms of Service", href: "#" },
-        { text: "Cookie Policy", href: "#" },
-        { text: "GDPR", href: "#" },
-      ]
-    },
   ];
 
   return (
@@ -49,20 +40,10 @@ const Footer = () => {
           {/* Logo and description */}
           <div className="col-span-2">
             <div className="text-2xl font-bold text-primary mb-4">InterviewAI</div>
-            <p className="text-gray-600 mb-6 max-w-xs">
-              Revolutionize your technical hiring with AI-powered interviews that save time and improve candidate experience.
+            <p className="text-gray-600 mb-3 max-w-xs">
+              Revolutionize your technical hiring with AI.
             </p>
-            <div className="flex space-x-4">
-              {["Facebook", "Twitter", "LinkedIn", "GitHub"].map((social, i) => (
-                <a 
-                  key={i} 
-                  href="#"
-                  className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white transition-colors"
-                >
-                  {social[0]}
-                </a>
-              ))}
-            </div>
+            <p>kvjjnlivnvl hello world </p>
           </div>
 
           {/* Footer links */}

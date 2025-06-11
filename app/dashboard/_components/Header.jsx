@@ -58,13 +58,13 @@ function Header() {
                         ${path=='/dashboard'&& 'text-primary font-bold ' }
                         `} onClick={() => HandleClick('/dashboard')}>Dashboard</li>
                   <li className={`hover:text-primary cursor-pointer
-                        ${path=='/upgrade'&& 'text-primary font-bold' }
-                        `} onClick={() => HandleClick('/upgrade')}>Upgrade</li>
-                  <li className={`hover:text-primary cursor-pointer
-                        ${path=='/how'&& 'text-primary font-bold' }
+                        ${path=='/dashboard/how'&& 'text-primary font-bold' }
                         `} onClick={() => HandleClick('/how')}>How it work ?</li>
                   <li className={`hover:text-primary cursor-pointer
-                        ${path=='/how'&& 'text-primary font-bold' }
+                        ${path=='/dashboard/pricing'&& 'text-primary font-bold' }
+                        `} onClick={() => HandleClick('/pricing')}>Pricing</li>
+                  <li className={`hover:text-primary cursor-pointer
+                        ${path=='/dashboard/blogs'&& 'text-primary font-bold' }
                         `} onClick={() => HandleClick('/blogs')}>Blogs</li>
             </ul>
       </div>
@@ -85,13 +85,13 @@ function Header() {
                               ${path=='/dashboard'&& 'text-primary font-bold' }
                               `} onClick={() => HandleClick('/dashboard')}>Dashboard</li>
                         <li className={`hover:text-primary cursor-pointer
-                              ${path=='/dashboard/upgrade'&& 'text-primary font-bold' }
-                              `} onClick={() => HandleClick('/dashboard/upgrade')}>Upgrade</li>
-                        <li className={`hover:text-primary cursor-pointer
                               ${path=='/dashboard/how'&& 'text-primary font-bold' }
                               `} onClick={() => HandleClick('/dashboard/how')}>How it work ?</li>
                         <li className={`hover:text-primary cursor-pointer
-                              ${path=='/dashboard/how'&& 'text-primary font-bold' }
+                              ${path=='/dashboard/pricing'&& 'text-primary font-bold' }
+                              `} onClick={() => HandleClick('/dashboard/pricing')}>Pricing</li>
+                        <li className={`hover:text-primary cursor-pointer
+                              ${path=='/dashboard/blogs'&& 'text-primary font-bold' }
                               `} onClick={() => HandleClick('/dashboard/blogs')}>Blogs</li>
                   </ul>
             </div>

@@ -78,7 +78,7 @@ const deleteInterview = async () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="hover:bg-gray-200">Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={deleteInterview}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

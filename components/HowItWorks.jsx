@@ -75,7 +75,7 @@ const HowItWorks = () => {
           >
             <div className="text-center mb-8">
               <h3 className="text-3xl font-bold text-white mb-2">Ready to transform your hiring process?</h3>
-              <p className="text-black">Join hundreds of companies that have improved their technical hiring</p>
+              <p className="text-white">Join hundreds of companies that have improved their technical hiring</p>
             </div>
             <div className="flex justify-center">
               <button onClick={()=> router.push("/dashboard")} className="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-xl transition-colors shadow-sm">
