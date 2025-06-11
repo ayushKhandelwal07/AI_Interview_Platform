@@ -58,7 +58,7 @@ const Hero = () => {
                 onClick={scrollToFeatures}
                 size="lg" 
                 variant="outline" 
-                className="rounded-xl border-primary text-primary hover:bg-primary hover:text-white px-8 py-6 text-lg font-medium"
+                className="rounded-xl border-white text-white hover:bg-white hover:text-black hover:border-none px-8 py-6 text-lg font-medium"
               >
                 Watch Demo
               </Button>

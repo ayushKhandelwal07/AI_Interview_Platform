@@ -56,7 +56,7 @@ function Header() {
             <ul className='flex text-lg  gap-8'>
                   <li className={`hover:text-primary cursor-pointer
                         ${path=='/dashboard'&& 'text-primary font-bold ' }
-                        `} onClick={() => HandleClick('/dashboard')}>Dashboard</li>
+                        `} onClick={() =>  HandleClick('/dashboard')}>Dashboard</li>
                   <li className={`hover:text-primary cursor-pointer
                         ${path=='/dashboard/how'&& 'text-primary font-bold' }
                         `} onClick={() => HandleClick('/how')}>How it work ?</li>
