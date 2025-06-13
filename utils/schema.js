@@ -69,4 +69,45 @@ export const UserAnswer = pgTable('userAnswer',{
   createdAt: varchar('createdAt'),
 });
 
+// Simple candidate session tracking (minimal addition)
+export const CandidateSession = pgTable('candidateSession', {
+  id: serial('id').primaryKey(),
+  mockId: varchar('mockId', { length: 255 }).notNull().references(() => MockInterview.mockId),
+  candidateEmail: varchar('candidateEmail', { length: 255 }).notNull(),
+  candidateName: varchar('candidateName', { length: 255 }),
+  uniqueToken: varchar('uniqueToken', { length: 255 }).notNull().unique(),
+  status: varchar('status', { length: 50 }).notNull().default('pending'), // pending, completed
+  completedAt: timestamp('completedAt'),
+  createdAt: timestamp('createdAt').defaultNow().notNull()
+});
+
+// Custom Application Forms
+export const ApplicationForm = pgTable('applicationForm', {
+  id: serial('id').primaryKey(),
+  formId: varchar('formId', { length: 255 }).notNull().unique(),
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description'),
+  fields: text('fields').notNull(), // JSON string of form fields
+  isActive: boolean('isActive').notNull().default(true),
+  createdBy: varchar('createdBy', { length: 255 }).notNull(),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  updatedAt: timestamp('updatedAt').defaultNow().notNull()
+});
+
+// Form Field Definitions (for reference)
+export const FormField = pgTable('formField', {
+  id: serial('id').primaryKey(),
+  formId: varchar('formId', { length: 255 }).notNull().references(() => ApplicationForm.formId),
+  fieldId: varchar('fieldId', { length: 255 }).notNull(),
+  fieldType: varchar('fieldType', { length: 50 }).notNull(), // text, email, phone, select, textarea, file, etc.
+  label: varchar('label', { length: 255 }).notNull(),
+  placeholder: varchar('placeholder', { length: 255 }),
+  required: boolean('required').notNull().default(false),
+  options: text('options'), // JSON for select/radio options
+  validation: text('validation'), // JSON for validation rules
+  order: varchar('order', { length: 10 }).notNull().default('0'),
+  createdAt: timestamp('createdAt').defaultNow().notNull()
+});
+
+// User Applications/Submissions
 console.log("MockInterview table schema created successfully");

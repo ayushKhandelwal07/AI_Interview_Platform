@@ -13,7 +13,7 @@ import { db } from '@/utils/db';
 import { v4 as uuid4 } from 'uuid';
 import { useUser } from '@clerk/nextjs';
 import moment from 'moment/moment';
-import MockInterview from '@/utils/schema';
+import MockInterview, { InterviewLink } from '@/utils/schema';
 import { useRouter } from 'next/navigation';
 import InterviewForm from './InterviewForm';
 import FormActions from './FormActions';
@@ -69,7 +69,26 @@ function InterviewDialog({ open, onOpenChange }) {
         if (resp) {
           onOpenChange(false);
           resetForm();
-          router.push('/admin/dashboard/interview/' + resp[0]?.mockId);
+          const interviewRoute = `/admin/dashboard/interview/${resp[0]?.mockId}`;
+          console.log(`/admin/dashboard/interview/${resp[0]?.mockId}`)
+          console.log(`${resp[0]?.mockId}`)
+          
+          // Save the interview link to the InterviewLink table
+          try {
+            await db.insert(InterviewLink)
+              .values({
+                mockId: resp[0]?.mockId,
+                link: interviewRoute,
+                status: 'active',
+                createdBy: user?.primaryEmailAddress?.emailAddress,
+                candidateEmail: null // Can be set later when sharing with candidates
+              });
+            console.log('Interview link saved successfully');
+          } catch (linkError) {
+            console.error('Error saving interview link:', linkError);
+          }
+        } else {
+          console.log("Some error occurred");
         }
       } else {
         console.log("Some error occurred");

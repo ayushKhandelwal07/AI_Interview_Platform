@@ -1,6 +1,6 @@
 'use client'
 import { db } from '@/utils/db';
-import MockInterview from '@/utils/schema';
+import MockInterview, { CandidateSession } from '@/utils/schema';
 import { eq } from 'drizzle-orm';
 import React, { useEffect, useState } from 'react'
 import QuestionsSection from './_components/Questions';
@@ -8,12 +8,18 @@ import RecordAnswerSection from './_components/RecordAnswerSection';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, CheckCircle, Loader2 } from 'lucide-react';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 function StartInterview({params}) {
     const [interviewData, setInterviewData] = useState(null);
+    const [candidateSession, setCandidateSession] = useState(null);
     const [mockInterviweQuestions, setMockInterviewQuestions] = useState(null);
     const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
     const [loading, setLoading] = useState(true);
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const candidateToken = searchParams.get('candidate');
+    const isCandidate = !!candidateToken;
 
     useEffect(() => {
         GetInterviewDetails();
@@ -31,6 +37,22 @@ function StartInterview({params}) {
                 setInterviewData(result[0]);
             } else {
                 console.error("No interview found with this ID");
+            }
+
+            // If candidate mode, get candidate session
+            if (candidateToken) {
+                const sessionResult = await db
+                    .select()
+                    .from(CandidateSession)
+                    .where(eq(CandidateSession.uniqueToken, candidateToken));
+                
+                if (sessionResult && sessionResult.length > 0) {
+                    setCandidateSession(sessionResult[0]);
+                } else {
+                    // Invalid candidate token
+                    router.push('/exam/dashboard/interview/invalid');
+                    return;
+                }
             }
         } catch (error) {
             console.error("Error fetching interview details:", error);
@@ -53,6 +75,25 @@ function StartInterview({params}) {
         }
     }
 
+    const handleCompleteInterview = async () => {
+        if (isCandidate && candidateSession) {
+            try {
+                // Update candidate session to completed
+                await db.update(CandidateSession)
+                    .set({ 
+                        status: 'completed',
+                        completedAt: new Date()
+                    })
+                    .where(eq(CandidateSession.uniqueToken, candidateToken));
+                
+                // Redirect to completion page
+                router.push(`/dashboard/interview/${params.interviewid}/completed?candidate=${candidateToken}`);
+            } catch (error) {
+                console.error('Error completing interview:', error);
+            }
+        }
+    }
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -65,7 +106,7 @@ function StartInterview({params}) {
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className={isCandidate ? "min-h-screen bg-gray-50 px-4 py-6" : "max-w-7xl mx-auto px-4 py-8"}>
             <header className="mb-8">
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
                     {interviewData?.title || 'Technical Interview Practice'}
@@ -79,7 +120,7 @@ function StartInterview({params}) {
                 </div>
             </header>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className={isCandidate ? "max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6" : "grid grid-cols-1 lg:grid-cols-2 gap-6"}>
                 <QuestionsSection 
                     mockInterviweQuestions={mockInterviweQuestions}
                     activeQuestionIndex={activeQuestionIndex}
@@ -90,6 +131,7 @@ function StartInterview({params}) {
                     mockInterviweQuestions={mockInterviweQuestions}
                     activeQuestionIndex={activeQuestionIndex}
                     interviewData={interviewData}
+                    candidateSession={candidateSession}
                 />
             </div>
             
@@ -106,12 +148,22 @@ function StartInterview({params}) {
                 
                 <div>
                     {activeQuestionIndex === mockInterviweQuestions?.length - 1 ? (
-                        <Link href={'/dashboard/interview/' + interviewData?.mockId + '/feedback'}>
-                            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
+                        isCandidate ? (
+                            <Button 
+                                className="bg-green-600 hover:bg-green-700 flex items-center gap-2"
+                                onClick={handleCompleteInterview}
+                            >
                                 <CheckCircle size={16} />
                                 Complete Interview
                             </Button>
-                        </Link>
+                        ) : (
+                            <Link href={'/dashboard/interview/' + interviewData?.mockId + '/feedback'}>
+                                <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
+                                    <CheckCircle size={16} />
+                                    Complete Interview
+                                </Button>
+                            </Link>
+                        )
                     ) : (
                         <Button 
                             onClick={goToNextQuestion}

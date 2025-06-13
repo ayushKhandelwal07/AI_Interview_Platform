@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import CreateInterviewCard from './_components/CreateInterviewCard';
 import InterviewDialog from './_components/InterviewDialog';
+import AdminInterviewList from './_components/AdminInterviewList';
 import Header from "@/app/dashboard/_components/Header";
 
 export default function AdminInterviews() {
@@ -31,7 +32,7 @@ export default function AdminInterviews() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Interview Management</h1>
@@ -42,15 +43,19 @@ export default function AdminInterviews() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           <CreateInterviewCard onClick={() => setOpenDialog(true)} />
           
-          Future: Add existing interviews cards here
-          You can add more interview cards or components here later
         </div>
-
         {/* Interview Creation Dialog */}
         <InterviewDialog 
           open={openDialog} 
           onOpenChange={setOpenDialog}
         />
+      
+        <div className='my-4'>
+            <p className='text-2xl font-bold'>All interviews </p>
+        </div>
+        
+        {/* Admin Interview Management Table */}
+        <AdminInterviewList />
       </div>
     </div>
   );

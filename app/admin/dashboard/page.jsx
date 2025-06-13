@@ -49,9 +49,16 @@ export default function AdminDashboard() {
 
   const quickActions = [
     {
+      title: "Manage Settings",
+      description: "Configure interview settings and preferences",
+      icon: <FileText className="h-6 w-6" />,
+      color: "bg-blue-500",
+      action: () => console.log("Manage settings")
+    },
+    {
       title: "Create New Interview",
       description: "Set up a new AI interview for candidates",
-      icon: <Plus className="h-6 w-6" />,
+      icon: <Plus className="mh-6 w-6" />,
       color: "bg-blue-500",
       action: () => router.push("/admin/dashboard/interviews")
     },
@@ -60,7 +67,7 @@ export default function AdminDashboard() {
       description: "Share interview links with candidates",
       icon: <Send className="h-6 w-6" />,
       color: "bg-green-500",
-      action: () => console.log("Send links")
+      action: () => router.push("/admin/dashboard/send")
     },
     {
       title: "View Analytics",
@@ -69,13 +76,6 @@ export default function AdminDashboard() {
       color: "bg-purple-500",
       action: () => console.log("View analytics")
     },
-    {
-      title: "Manage Settings",
-      description: "Configure interview settings and preferences",
-      icon: <Settings className="h-6 w-6" />,
-      color: "bg-gray-500",
-      action: () => console.log("Manage settings")
-    }
   ];
 
   // Show loading or redirect if not admin

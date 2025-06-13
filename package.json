@@ -34,6 +34,7 @@
     "motion": "^12.11.4",
     "next": "14.2.8",
     "next-themes": "^0.3.0",
+    "nodemailer": "^7.0.3",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-speech-to-text": "^0.8.0",

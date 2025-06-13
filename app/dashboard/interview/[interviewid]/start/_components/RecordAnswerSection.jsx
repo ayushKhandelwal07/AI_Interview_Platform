@@ -11,13 +11,17 @@ import React, { useEffect, useState } from 'react'
 import useSpeechToText from 'react-hook-speech-to-text';
 import Webcam from "react-webcam";
 import { toast } from 'sonner';
+import { useSearchParams } from 'next/navigation';
 
-function RecordAnswerSection({mockInterviweQuestions, activeQuestionIndex, interviewData}) {
+function RecordAnswerSection({mockInterviweQuestions, activeQuestionIndex, interviewData, candidateSession}) {
     const [userAnswer, setUserAnswer] = useState('');
     const {user} = useUser();
     const [loading, setLoading] = useState(false);
     const [recordingTime, setRecordingTime] = useState(0);
     const [timer, setTimer] = useState(null);
+    const searchParams = useSearchParams();
+    const candidateToken = searchParams.get('candidate');
+    const isCandidate = !!candidateToken;
 
     const {
         error,
@@ -107,7 +111,7 @@ function RecordAnswerSection({mockInterviweQuestions, activeQuestionIndex, inter
                 userAns: userAnswer,
                 feedback: JsonFeedbackResp?.feedback,
                 rating: JsonFeedbackResp?.rating,
-                userEmail: user?.primaryEmailAddress?.emailAddress,
+                userEmail: isCandidate ? candidateSession?.candidateEmail : user?.primaryEmailAddress?.emailAddress,
                 createdAt: moment().format('DD-MM-yyyy')
             });
             
