@@ -24,28 +24,31 @@ import { useRouter } from 'next/navigation';
 
 function AddNewInterview() {
       const [openDialog , setOpenDialog] = useState(false);
-      const [jobPosition , setJobPosition] = useState();
-      const [jobDescription, setJobDescription] = useState();
-      const [jobExperience , setJobExperience] = useState();
+      const [jobPosition , setJobPosition] = useState('');
+      const [jobDescription, setJobDescription] = useState('');
+      const [jobExperience , setJobExperience] = useState('');
       const [loading , setLoading] = useState(false);
       const [jsonResponse , setJsonResponce] = useState([]);
       const route=useRouter();
       const {user} = useUser(); 
 
+      const onSubmit = async (e) => {
+            e.preventDefault();
+            setLoading(true);
+            
+            // Validate required fields
+            if (!jobPosition || !jobDescription || !jobExperience) {
+                  alert('Please fill in all required fields');
+                  setLoading(false);
+                  return;
+            }
 
-            const onSubmit =async (e)=>{
-                  setLoading(true)
-                  e.preventDefault()
-                  // console.log(jobPosition,jobDescription,jobExperience);
-
-                  const InputPrompt="Job Position: " +  jobPosition + ", Job Description:  " + jobDescription +", Years of Experience: " + jobDescription+ ", Depends on this information please give me " + process.env.NEXT_PUBLIC_NUMBER_OF_QUESTIONS +" Interview question with Answer in Json Format";
+            try {
+                  const InputPrompt="Job Position: " +  jobPosition + ", Job Description:  " + jobDescription +", Years of Experience: " + jobExperience+ ", Depends on this information please give me " + process.env.NEXT_PUBLIC_NUMBER_OF_QUESTIONS +" Interview question with Answer in Json Format";
                   const result = await chatSession.sendMessage(InputPrompt);
                   
-                  // console.log(result.response.text())
                   const final_result = (result.response.text()).replace('```json','').replace('```',''); 
-                 
-                  
-                  setJsonResponce(final_result)
+                  setJsonResponce(final_result);
 
                   if(final_result){
                         const resp= await db.insert(MockInterview)
@@ -56,21 +59,29 @@ function AddNewInterview() {
                               jobDesc:jobDescription,
                               jobExperience:jobExperience,
                               createdBy:user?.primaryEmailAddress?.emailAddress,
+                              createdByRole: 'user',
                               creaetdAt:moment().format('DD-MM-yyyy')
                         }).returning({mockId:MockInterview.mockId});
 
                         if(resp){
                               setOpenDialog(false);
-                              route.push('/dashboard/interview/'+resp[0]?.mockId);                       
+                              route.push('/dashboard/interview/'+resp[0]?.mockId);  
                         }
-
-                        
-                        // console.log("response id : ",resp )
-                        setLoading(false);
-                  }else{
-                        console.log("Some error occur")
+                  } else {
+                        console.log("Some error occur");
                   }
+            } catch (error) {
+                  console.error('Error creating interview:', error);
+                  alert('Error creating interview. Please try again.');
+            } finally {
+                  setLoading(false);
             }
+      }
+
+      const handleCancel = (e) => {
+            e.preventDefault();
+            setOpenDialog(false);
+      }
 
     
   return (
@@ -81,42 +92,75 @@ function AddNewInterview() {
             
       </div>
 
-      <Dialog className='' open={openDialog}>
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogOverlay className="fixed inset-0 bg-slate z-50" />
       <DialogContent className='max-w-2xl bg-white rounded-2xl'>
       <DialogHeader>
-            <DialogTitle  className='font-bold text-2xl'>Tell us more about your job interviewing</DialogTitle>
+            <DialogTitle className='font-bold text-2xl'>Tell us more about your job interviewing</DialogTitle>
             <DialogDescription>
-
-                  <form onSubmit={onSubmit} >
+                  <form onSubmit={onSubmit}>
                   <div>
                         <h2>Add details about your job position,Your skills and Year of experience</h2>
                         <div className='mt-7 my-2'>
                               <label>Job Position / Role</label>
-                              <Input className='rounded-xl' placeholder='Ex. Full Stack Developer' required 
-                              onChange={(event)=>setJobPosition(event.target.value)} />
+                              <Input 
+                                    className='rounded-xl' 
+                                    placeholder='Ex. Full Stack Developer' 
+                                    required 
+                                    value={jobPosition}
+                                    onChange={(event)=>setJobPosition(event.target.value)} 
+                              />
                         </div> 
                         <div className='my-3'>
                               <label>Job Description / Tech Stack in short</label>
-                              <Textarea className='rounded-xl' placeholder='Ex. Node.js , React , Express.js , MongoDb , Docker etc'
-                              onChange={(event)=>setJobDescription(event.target.value)} />
+                              <Textarea 
+                                    className='rounded-xl' 
+                                    placeholder='Ex. Node.js , React , Express.js , MongoDb , Docker etc'
+                                    required
+                                    value={jobDescription}
+                                    onChange={(event)=>setJobDescription(event.target.value)} 
+                              />
                         </div> 
                         <div className='my-3'>
                               <label>Experience</label>
-                              <Input className='rounded-xl' type='number' placeholder='Ex. 5 years' min='0' max='30' 
-                              onChange={(event)=>setJobExperience(event.target.value)}/>
+                              <Input 
+                                    className='rounded-xl' 
+                                    type='number' 
+                                    placeholder='Ex. 5 years' 
+                                    min='0' 
+                                    max='30' 
+                                    required
+                                    value={jobExperience}
+                                    onChange={(event)=>setJobExperience(event.target.value)}
+                              />
                         </div> 
-
                   </div>
 
                   <div className='flex gap-5 justify-end'>
-                        <Button className='bg-primary/10 rounded-xl' onClick={()=>setOpenDialog(false)}>Cancel</Button>
-                        <Button className='rounded-xl tracking-normal' type='submit' disable={loading}> {loading? <><LoaderCircle className='animate-spin' /> Generating... </> : 'Start Inerview'} </Button>
+                        <Button 
+                              type="button"
+                              className='bg-primary/10 rounded-xl' 
+                              onClick={handleCancel}
+                              disabled={loading}
+                        >
+                              Cancel
+                        </Button>
+                        <Button 
+                              className='rounded-xl tracking-normal' 
+                              type='submit' 
+                              disabled={loading}
+                        > 
+                              {loading ? (
+                                    <>
+                                          <LoaderCircle className='animate-spin mr-2' /> 
+                                          Generating...
+                                    </>
+                              ) : (
+                                    'Start Interview'
+                              )} 
+                        </Button>
                   </div>
-
                   </form>
-
-
             </DialogDescription>
       </DialogHeader>
       </DialogContent>

@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import { AdminProvider } from '@/contexts/RoleContext';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,8 +27,10 @@ export default function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Toaster className="z-50 bg-white" />
-          {children}
+          <AdminProvider>
+            <Toaster className="z-50 bg-white" />
+            {children}
+          </AdminProvider>
         </body>
       </html>
     </ClerkProvider>
