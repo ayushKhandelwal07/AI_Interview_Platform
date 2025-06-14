@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { db } from '@/utils/db';
-import { CandidateSession, MockInterview } from '@/utils/schema';
+import MockInterview, { CandidateSession } from '@/utils/schema';
 import { eq } from 'drizzle-orm';
 import { CheckCircle, Clock, FileText, User, Copy, Printer } from 'lucide-react';
 import { Button } from '@/components/ui/button';

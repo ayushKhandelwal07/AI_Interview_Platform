@@ -7,11 +7,13 @@ import CreateInterviewCard from './_components/CreateInterviewCard';
 import InterviewDialog from './_components/InterviewDialog';
 import AdminInterviewList from './_components/AdminInterviewList';
 import Header from "@/app/dashboard/_components/Header";
+import { useAdminInterviews } from '@/hooks/useAdminInterviews';
 
 export default function AdminInterviews() {
   const { isAdmin } = useAdmin();
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
+  const { refreshInterviews } = useAdminInterviews();
 
   // Redirect if not admin
   useEffect(() => {
@@ -39,23 +41,23 @@ export default function AdminInterviews() {
           <p className="mt-2 text-gray-600">Create and manage AI-powered interviews for candidates</p>
         </div>
 
-        {/* Interview Grid */}
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        {/* Create Interview Section */}
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8'>
           <CreateInterviewCard onClick={() => setOpenDialog(true)} />
-          
         </div>
+        
         {/* Interview Creation Dialog */}
         <InterviewDialog 
           open={openDialog} 
           onOpenChange={setOpenDialog}
+          onInterviewCreated={refreshInterviews}
         />
-      
-        <div className='my-4'>
-            <p className='text-2xl font-bold'>All interviews </p>
-        </div>
         
         {/* Admin Interview Management Table */}
-        <AdminInterviewList />
+        <div className="mt-8">
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Interview Management</h3>
+          <AdminInterviewList />
+        </div>
       </div>
     </div>
   );

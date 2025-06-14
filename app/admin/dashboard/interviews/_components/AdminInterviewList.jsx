@@ -1,9 +1,6 @@
 "use client"
-import React, { useState, useEffect } from 'react';
-import { db } from '@/utils/db';
-import MockInterview, { InterviewLink } from '@/utils/schema';
-import { useUser } from '@clerk/nextjs';
-import { desc, eq, and } from 'drizzle-orm';
+import React, { useState } from 'react';
+import { useAdminInterviews } from '@/hooks/useAdminInterviews';
 import { 
   Eye, 
   Link as LinkIcon, 
@@ -34,95 +31,27 @@ import {
 } from "@/components/ui/alert-dialog";
 
 function AdminInterviewList() {
-  const { user } = useUser();
-  const [interviews, setInterviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { 
+    interviews: allInterviews, 
+    loading, 
+    deleteInterview, 
+    updateLinkStatus,
+    activeInterviews,
+    inactiveInterviews 
+  } = useAdminInterviews();
   const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'active', 'inactive'
 
-  useEffect(() => {
-    if (user) {
-      fetchInterviews();
-    }
-  }, [user, statusFilter]);
-
-  const fetchInterviews = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch interviews with their corresponding links
-      const interviewData = await db
-        .select({
-          mockId: MockInterview.mockId,
-          jobPosition: MockInterview.jobPosition,
-          jobDesc: MockInterview.jobDesc,
-          jobExperience: MockInterview.jobExperience,
-          createdBy: MockInterview.createdBy,
-          createdAt: MockInterview.createdAt,
-          link: InterviewLink.link,
-          linkStatus: InterviewLink.status,
-          candidateEmail: InterviewLink.candidateEmail,
-          linkCreatedAt: InterviewLink.createdAt,
-        })
-        .from(MockInterview)
-        .leftJoin(InterviewLink, eq(MockInterview.mockId, InterviewLink.mockId))
-        .where(
-          and(
-            eq(MockInterview.createdBy, user?.primaryEmailAddress?.emailAddress),
-            eq(MockInterview.createdByRole, 'admin')
-          )
-        )
-        .orderBy(desc(MockInterview.createdAt));
-
-      // Filter by status if needed
-      let filteredData = interviewData;
-      if (statusFilter !== 'all') {
-        filteredData = interviewData.filter(interview => 
-          interview.linkStatus === statusFilter
-        );
-      }
-
-      setInterviews(filteredData);
-    } catch (error) {
-      console.error('Error fetching interviews:', error);
-      toast.error('Failed to fetch interviews');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Filter interviews based on status
+  const interviews = statusFilter === 'all' 
+    ? allInterviews 
+    : allInterviews.filter(interview => interview.linkStatus === statusFilter);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     toast.success('Link copied to clipboard!');
   };
 
-  const deleteInterview = async (mockId) => {
-    try {
-      // Delete from both tables
-      await db.delete(InterviewLink).where(eq(InterviewLink.mockId, mockId));
-      await db.delete(MockInterview).where(eq(MockInterview.mockId, mockId));
-      
-      toast.success('Interview deleted successfully');
-      fetchInterviews(); // Refresh the list
-    } catch (error) {
-      console.error('Error deleting interview:', error);
-      toast.error('Failed to delete interview');
-    }
-  };
 
-  const updateLinkStatus = async (mockId, newStatus) => {
-    try {
-      await db
-        .update(InterviewLink)
-        .set({ status: newStatus })
-        .where(eq(InterviewLink.mockId, mockId));
-      
-      toast.success(`Interview status updated to ${newStatus}`);
-      fetchInterviews(); // Refresh the list
-    } catch (error) {
-      console.error('Error updating status:', error);
-      toast.error('Failed to update status');
-    }
-  };
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -170,7 +99,7 @@ function AdminInterviewList() {
               size="sm"
               onClick={() => setStatusFilter('all')}
             >
-              All ({interviews.length})
+              All ({allInterviews.length})
             </Button>
             <Button
             className="bg-indigo-600 text-white hover:text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors"
@@ -178,7 +107,7 @@ function AdminInterviewList() {
               size="sm"
               onClick={() => setStatusFilter('active')}
             >
-              Active ({interviews.filter(i => i.linkStatus === 'active').length})
+              Active ({activeInterviews})
             </Button>
             <Button
             className="bg-indigo-600 text-white hover:text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors"
@@ -186,7 +115,7 @@ function AdminInterviewList() {
               size="sm"
               onClick={() => setStatusFilter('inactive')}
             >
-              Inactive ({interviews.filter(i => i.linkStatus === 'inactive').length})
+              Inactive ({inactiveInterviews})
             </Button>
           </div>
         </div>
@@ -330,7 +259,7 @@ function AdminInterviewList() {
                         </Button>
 
                         {/* Delete Interview */}
-                        <AlertDialog>
+                        <AlertDialog className="bg-white">
                           <AlertDialogTrigger asChild>
                             <Button
                               variant="ghost"

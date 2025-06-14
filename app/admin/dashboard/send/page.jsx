@@ -1,26 +1,21 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs';
 import { useAdmin } from '@/contexts/RoleContext';
 import { useRouter } from 'next/navigation';
 import { db } from '@/utils/db';
-import MockInterview, { InterviewLink, CandidateSession } from '@/utils/schema';
-import { desc, eq, and } from 'drizzle-orm';
+import { CandidateSession } from '@/utils/schema';
+import { useAdminInterviews } from '@/hooks/useAdminInterviews';
 import { v4 as uuid4 } from 'uuid';
 import { 
   Send, 
   Mail, 
-  User, 
-  Copy, 
-  CheckCircle, 
-  Clock,
-  Search,
-  Filter
+Search,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import Header from "@/app/dashboard/_components/Header";
+import InterviewCard from "../_components/InterviewCard";
 import {
   Dialog,
   DialogContent,
@@ -33,9 +28,7 @@ import {
 export default function SendInterview() {
   const { isAdmin } = useAdmin();
   const router = useRouter();
-  const { user } = useUser();
-  const [interviews, setInterviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { interviews, loading } = useAdminInterviews();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedInterview, setSelectedInterview] = useState(null);
   const [candidateEmail, setCandidateEmail] = useState('');
@@ -49,41 +42,6 @@ export default function SendInterview() {
       router.push('/dashboard');
     }
   }, [isAdmin, router]);
-
-  useEffect(() => {
-    if (user && isAdmin) {
-      fetchInterviews();
-    }
-  }, [user, isAdmin]);
-
-  const fetchInterviews = async () => {
-    try {
-      setLoading(true);
-      const result = await db
-        .select({
-          mockId: MockInterview.mockId,
-          jobPosition: MockInterview.jobPosition,
-          jobDesc: MockInterview.jobDesc,
-          jobExperience: MockInterview.jobExperience,
-          createdAt: MockInterview.createdAt,
-        })
-        .from(MockInterview)
-        .where(
-          and(
-            eq(MockInterview.createdBy, user?.primaryEmailAddress?.emailAddress),
-            eq(MockInterview.createdByRole, 'admin')
-          )
-        )
-        .orderBy(desc(MockInterview.createdAt));
-
-      setInterviews(result);
-    } catch (error) {
-      console.error('Error fetching interviews:', error);
-      toast.error('Failed to fetch interviews');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const generateCandidateLink = async (mockId, email, name) => {
     try {
@@ -102,7 +60,7 @@ export default function SendInterview() {
       });
 
       // Generate candidate interview URL
-      const candidateUrl = `${window.location.origin}/exam/dashboard/interview/${uniqueToken}`;
+      const candidateUrl = `${window.location.origin}/exam/${uniqueToken}`;
       
       // Send email to candidate
       const emailResponse = await fetch('/api/send-email', {
@@ -205,7 +163,7 @@ export default function SendInterview() {
               placeholder="Search interviews by position or description..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 rounded-xl"
             />
           </div>
         </div>
@@ -213,36 +171,12 @@ export default function SendInterview() {
         {/* Interviews Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredInterviews.map((interview) => (
-            <div
+            <InterviewCard
               key={interview.mockId}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {interview.jobPosition}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {interview.jobExperience} years experience
-                  </p>
-                  <p className="text-xs text-gray-500 line-clamp-2">
-                    {interview.jobDesc}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                <span>Created: {new Date(interview.createdAt).toLocaleDateString()}</span>
-              </div>
-
-              <Button
-                onClick={() => handleSendInterview(interview)}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
-              >
-                <Send className="h-4 w-4 mr-2" />
-                Send to Candidate
-              </Button>
-            </div>
+              interview={interview}
+              variant="send"
+              onSend={handleSendInterview}
+            />
           ))}
         </div>
 
@@ -308,14 +242,14 @@ export default function SendInterview() {
                 <Button
                   variant="outline"
                   onClick={() => setOpenDialog(false)}
-                  className="flex-1 rounded-xl"
+                  className="flex-1 bg-white text-black rounded-xl text-sm hover:text-white font-medium hover:bg-indigo-700 transition-colors"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={() => generateCandidateLink(selectedInterview?.mockId, candidateEmail, candidateName)}
                   disabled={!candidateEmail || !candidateName || sendingEmail}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 rounded-xl"
+                  className="flex-1 bg-indigo-700 text-white rounded-xl text-sm hover:text-white font-medium hover:bg-indigo-800 transition-colors"
                 >
                   {sendingEmail ? (
                     <>

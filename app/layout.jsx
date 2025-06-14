@@ -28,8 +28,8 @@ export default function RootLayout({ children }) {
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <AdminProvider>
-            <Toaster className="z-50 bg-white" />
-            {children}
+          <Toaster className="z-50 bg-white" />
+          {children}
           </AdminProvider>
         </body>
       </html>

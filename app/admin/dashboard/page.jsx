@@ -49,11 +49,11 @@ export default function AdminDashboard() {
 
   const quickActions = [
     {
-      title: "Manage Settings",
-      description: "Configure interview settings and preferences",
+      title: "Manage Job Forms",
+      description: "Create and manage job application forms",
       icon: <FileText className="h-6 w-6" />,
       color: "bg-blue-500",
-      action: () => console.log("Manage settings")
+      action: () => router.push("/admin/dashboard/forms")
     },
     {
       title: "Create New Interview",
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
       description: "Check detailed performance reports",
       icon: <BarChart3 className="h-6 w-6" />,
       color: "bg-purple-500",
-      action: () => console.log("View analytics")
+      action: () => router.push("/admin/dashboard/analytics")
     },
   ];
 

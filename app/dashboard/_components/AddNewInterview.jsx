@@ -65,7 +65,7 @@ function AddNewInterview() {
 
                         if(resp){
                               setOpenDialog(false);
-                              route.push('/dashboard/interview/'+resp[0]?.mockId);  
+                              route.push('/dashboard/interview/'+resp[0]?.mockId);                       
                         }
                   } else {
                         console.log("Some error occur");
@@ -81,7 +81,7 @@ function AddNewInterview() {
       const handleCancel = (e) => {
             e.preventDefault();
             setOpenDialog(false);
-      }
+            }
 
     
   return (

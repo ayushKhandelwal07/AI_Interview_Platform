@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import InterviewForm from './InterviewForm';
 import FormActions from './FormActions';
 
-function InterviewDialog({ open, onOpenChange }) {
+function InterviewDialog({ open, onOpenChange, onInterviewCreated }) {
   const [jobPosition, setJobPosition] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [jobExperience, setJobExperience] = useState('');
@@ -83,10 +83,15 @@ function InterviewDialog({ open, onOpenChange }) {
                 createdBy: user?.primaryEmailAddress?.emailAddress,
                 candidateEmail: null // Can be set later when sharing with candidates
               });
-            console.log('Interview link saved successfully');
-          } catch (linkError) {
-            console.error('Error saving interview link:', linkError);
-          }
+                         console.log('Interview link saved successfully');
+           } catch (linkError) {
+             console.error('Error saving interview link:', linkError);
+           }
+           
+           // Call the callback to refresh the interviews list
+           if (onInterviewCreated) {
+             onInterviewCreated();
+           }
         } else {
           console.log("Some error occurred");
         }
