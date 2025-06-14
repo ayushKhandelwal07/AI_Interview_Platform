@@ -110,4 +110,17 @@ export const FormField = pgTable('formField', {
 });
 
 // User Applications/Submissions
+export const UserApplications = pgTable('userApplications', {
+  id: serial('id').primaryKey(),
+  formId: varchar('formId', { length: 255 }).notNull().references(() => ApplicationForm.formId),
+  applicantName: varchar('applicantName', { length: 255 }).notNull(),
+  applicantEmail: varchar('applicantEmail', { length: 255 }).notNull(),
+  applicationData: text('applicationData').notNull(), // JSON string of form responses
+  status: varchar('status', { length: 50 }).notNull().default('pending'), // pending, reviewed, accepted, rejected
+  submittedAt: timestamp('submittedAt').defaultNow().notNull(),
+  reviewedAt: timestamp('reviewedAt'),
+  reviewedBy: varchar('reviewedBy', { length: 255 }),
+  notes: text('notes')
+});
+
 console.log("MockInterview table schema created successfully");
