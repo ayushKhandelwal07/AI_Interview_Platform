@@ -21,6 +21,10 @@ export async function POST(request) {
       );
     }
 
+    // Replace localhost with production URL
+    const productionURL = 'https://ai-interview-platform-je7y.vercel.app';
+    const finalInterviewLink = interviewLink.replace('http://localhost:3000', productionURL);
+
     // Create transporter using Gmail SMTP
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -98,20 +102,20 @@ export async function POST(request) {
           }
           .cta-button {
             display: inline-block;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            color: white;
+            background-color: #4f46e5;
+            color: white !important;
             padding: 16px 32px;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 14px;
             text-align: center;
             margin: 20px 0;
             box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease;
           }
           .cta-button:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            background-color: #4338ca;
             transform: translateY(-2px);
           }
           .instructions {
@@ -187,7 +191,7 @@ export async function POST(request) {
             </div>
             
             <div style="text-align: center;">
-              <a href="${interviewLink}" class="cta-button">
+              <a href="${finalInterviewLink}" class="cta-button">
                 🎯 Start Your Interview
               </a>
             </div>
@@ -237,7 +241,7 @@ export async function POST(request) {
         - Have your webcam and microphone ready
         - Take your time to provide thoughtful answers
 
-        Click here to start your interview: ${interviewLink}
+        Click here to start your interview: ${finalInterviewLink}
 
         Best regards,
         The ${companyName} Hiring Team

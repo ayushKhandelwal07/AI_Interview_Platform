@@ -75,10 +75,13 @@ function InterviewDialog({ open, onOpenChange, onInterviewCreated }) {
           
           // Save the interview link to the InterviewLink table
           try {
+            const productionURL = 'https://ai-interview-platform-je7y.vercel.app';
+            const fullInterviewLink = `${productionURL}/exam/${resp[0]?.mockId}`;
+            
             await db.insert(InterviewLink)
               .values({
                 mockId: resp[0]?.mockId,
-                link: interviewRoute,
+                link: fullInterviewLink,
                 status: 'active',
                 createdBy: user?.primaryEmailAddress?.emailAddress,
                 candidateEmail: null // Can be set later when sharing with candidates

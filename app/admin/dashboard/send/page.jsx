@@ -60,7 +60,9 @@ export default function SendInterview() {
       });
 
       // Generate candidate interview URL
-      const candidateUrl = `${window.location.origin}/exam/${uniqueToken}`;
+      const productionURL = 'https://ai-interview-platform-je7y.vercel.app';
+      const baseURL = window.location.origin.includes('localhost') ? productionURL : window.location.origin;
+      const candidateUrl = `${baseURL}/exam/${uniqueToken}`;
       
       // Send email to candidate
       const emailResponse = await fetch('/api/send-email', {
