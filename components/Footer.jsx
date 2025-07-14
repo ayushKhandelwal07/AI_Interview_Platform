@@ -58,7 +58,7 @@ const Footer = () => {
                 <Github size={25} />
               </a>
               <a 
-                href="https://x.com/ashuKhandelwal_/following" 
+                href="https://x.com/ashu0XD" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-primary transition-colors"
