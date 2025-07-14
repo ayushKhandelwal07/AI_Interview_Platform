@@ -54,14 +54,6 @@ const Hero = () => {
                 Get Started Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                onClick={scrollToFeatures}
-                size="lg" 
-                variant="outline" 
-                className="rounded-xl border-white text-white hover:bg-white hover:text-black hover:border-none px-8 py-6 text-lg font-medium"
-              >
-                Watch Demo
-              </Button>
             </div>                
             </div>
           </div>

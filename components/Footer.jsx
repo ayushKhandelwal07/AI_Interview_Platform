@@ -1,4 +1,5 @@
 import React from 'react';
+import { Github, Twitter, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -43,7 +44,38 @@ const Footer = () => {
             <p className="text-gray-600 mb-3 max-w-xs">
               Revolutionize your technical hiring with AI.
             </p>
-            <p>kvjjnlivnvl hello world </p>
+            <div className='pb-4'>
+              Contact me 
+            </div>
+            <div className="flex space-x-10 ">
+              <a 
+                href="https://github.com/ayushKhandelwal07" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-black transition-colors"
+                aria-label="GitHub"
+              >
+                <Github size={25} />
+              </a>
+              <a 
+                href="https://x.com/ashuKhandelwal_/following" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-primary transition-colors"
+                aria-label="Twitter/X"
+              >
+                <Twitter size={25} />
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/ayush-khandelwal-284294287/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-blue-600 transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={25} />
+              </a>
+            </div>
           </div>
 
           {/* Footer links */}

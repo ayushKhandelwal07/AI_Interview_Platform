@@ -51,54 +51,6 @@ const Features = () => {
           ))}
         </div>
 
-        <div id='features' className="mt-16 bg-gradient-hero rounded-xl p-8 shadow-sm border border-gray-100 scroll-mt-40">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-accentDark mb-4">
-                How Our AI Makes Interviewing Better
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Our platform combines cutting-edge AI technology with years of technical interviewing expertise to deliver an experience that benefits both recruiters and candidates.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "Evaluates technical skills with human-like precision",
-                  "Adapts questions based on candidate responses",
-                  "Provides comprehensive reports with actionable insights",
-                  "Integrates seamlessly with your existing ATS"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-secondary mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <section 
-              className="pt-28 pb-20 relative overflow-hidden rounded-xl"
-
-
-              style={{
-                backgroundImage: 'url(/bg.avif )',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
-              }}
-            >
-            <div className="p-4 rounded-sm">
-              <div className="aspect-video bg-gray-100 rounded-md flex items-center justify-center">
-                <div className="text-center p-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="h-8 w-8 text-primary" />
-                  </div>
-                  <p className="text-gray-500 text-sm">Demo Video Placeholder</p>
-                </div>
-              </div>
-            </div>
-          </section>
-          </div>
-        </div>
       </div>
     </section>
   );
